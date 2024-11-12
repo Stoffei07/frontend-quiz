@@ -19,36 +19,47 @@
 	function nextQuestion() {
 		currentQuestion++;
 		submitted = false;
+		selectedAnswer = '';
 	}
 </script>
 
-<h1>{data.title}</h1>
+{#if currentQuestion < data.questions.length}
+	<h1>{data.title}</h1>
 
-{#each data.questions as question, index (question.question)}
-	{#if index === currentQuestion}
-		<p>Question {index + 1} of {data.questions.length}</p>
-		<h2>{question.question}</h2>
-		{#each question.options as option, index (option)}
-			{#key submitted}
-				<ListItem
-					title={option}
-					{index}
-					correctAnswer={}
-					focusAction={() => (selectedAnswer = option)}
-					correctAnswer={question.selectedAnswer && question.answer === option}
-				></ListItem>
-			{/key}
-		{/each}
+	{#each data.questions as question, index (question.question)}
+		{#if index === currentQuestion}
+			<p>Question {index + 1} of {data.questions.length}</p>
+			<h2>{question.question}</h2>
+			{#each question.options as option, index (option)}
+				{#key submitted}
+					<ListItem
+						title={option}
+						{index}
+						correctAnswer={question.selectedAnswer && question.answer === option}
+						incorrectlySelected={question.selectedAnswer === option && question.answer !== option}
+						focusAction={() => (selectedAnswer = option)}
+						disabled={submitted}
+					></ListItem>
+				{/key}
+			{/each}
+		{/if}
+	{/each}
+
+	{#if !submitted}
+		<button class="btn btn-primary" onclick={handleSubmit} disabled={!selectedAnswer}>
+			Submit
+		</button>
+	{:else}
+		<button class="btn btn-primary" onclick={nextQuestion}> Next Question </button>
 	{/if}
-{/each}
-
-{#if !submitted}
-	<button class="btn btn-primary" onclick={handleSubmit}> Submit </button>
 {:else}
-	<button class="btn btn-primary" onclick={nextQuestion}> Next Question </button>
+	<h2>Game Over!</h2>
+	<p>Your scored {score} out of {data.questions.length} points!</p>
+	<buttom class="btn btn-primary" onclick={window.location.reload()}> Play again </buttom>
 {/if}
-{selectedAnswer}
-{score}
-{#key submitted}
+
+<!-- {selectedAnswer}
+{score} -->
+<!-- {#key submitted}
 	{JSON.stringify(data.questions[currentQuestion])}
-{/key}
+{/key} -->
