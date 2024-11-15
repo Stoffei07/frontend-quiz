@@ -3,7 +3,7 @@
 	import ListItem from '$lib/fonts/components/ListItem.svelte';
 </script>
 
-<h1>Welcome to the <strong class="text-primary">Frontend Quiz!</strong></h1>
+<h1>Welcome to the <strong class="text-primary">Stefan's Frontend Quiz!</strong></h1>
 <p>Pick a subject to get started.</p>
 
 <div class="flex flex-col gap-4"></div>
